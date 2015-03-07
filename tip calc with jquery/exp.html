@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tip Calculator</title>
+    
+    <style>
+
+        body{
+            margin:0;
+            padding:0;
+            font-family: Arial;
+
+        }
+        
+        .form-wrapper{
+            width:535px;
+            /*min-height: 300px;*/
+            display: table;
+
+            margin: 30px auto;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .form-wrapper .left-form{
+            width: 215px;
+            float: left;
+            box-sizing: border-box;
+            padding: 10px;
+            border-right: solid 1px #EBEBEB;
+        }
+
+        .form-wrapper .right-form{
+            width: 320px;
+            float: left;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        .form-wrapper input[type="text"]{
+            width: 170px;
+            height:35px;
+            margin:2px 0;
+            line-height:35px;;
+            padding-left:5px;
+            border: none;
+            text-align: center;
+            color: #000;
+            font-size:30px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2) inset;
+        }
+
+        .form-wrapper label{
+            color: #878787;
+            font-size: 16px;
+            margin: 1px 0;
+        }
+
+        .form-group{
+            margin: 2px 0;
+        }
+
+        #tip-head{
+            font-size: 40px;
+            float: right;
+        }
+
+        #tip-head:before{
+            content: '$';
+        }
+
+        #per-tip:after{
+            content: '%';
+        }
+
+        #bill-head{
+            font-size: 40px;
+            font-weight:bold;
+            float: right;
+        }
+
+        #bill-head:before{
+            content: '$';
+        }
+
+        .form-group.right-group{
+            margin: 30px;
+        }
+
+        .output-lbl{
+            font-size:40px !important;
+            color:#000 !important;
+        }
+       
+        .subscript{
+          position: absolute;
+          float: left;
+          line-height: 14px;
+          margin-left: 7px;
+        }
+        .overflows{
+          overflow: hidden;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="form-wrapper">
+<form action="#">
+    <div class="left-form">
+       <div class="form-group">
+           <label for="">Bill</label><br/>
+           <input type="text" name="" id="tot-bill" value="0.00" onkeypress="calc()"/>
+       </div>
+      <div class="form-group">
+          <label for="">Tip%</label><br/>
+              
+<span><img src="minus.png" style="position:absolute;margin-top:2px;float:left;background: #fff;box-shadow: 0 0 5px rgba(0,0,0,0.5);" height="35px" width="35px" id="tip-minus" ></span>
+
+          <span><input type="text" size=30 name="" id="per-tip" value="1" onkeypress="calc()" style=""/></span>
+
+
+<span><img src="plus.png" height="35px" width="35px"style="clear:left;margin-left:-37px;position:absolute;margin-top:2px;float:right;box-shadow: 0 0 5px rgba(0,0,0,0.5);" id="tip-plus"></span>
+           
+      </div>
+      <div class="form-group">
+
+<span><img src="minus.png" style="position:absolute;margin-top:20px;float:left;background: #fff;box-shadow: 0 0 5px rgba(0,0,0,0.5);" height="35px" width="35px" id="ppl-minus" ></span>
+
+
+          <label for="">Number of People</label><br/>
+          <input type="text" name="" id="no-person" value="1" onkeypress="calc()"/>
+
+<span><img src="plus.png" height="35px" width="35px"style="clear:left;margin-left:-37px;margin-top:2px;position:absolute;float:right;box-shadow: 0 0 5px rgba(0,0,0,0.5);" id="ppl-plus"></span>
+
+      </div>
+    </div>
+    <div class="right-form">
+       <div class="form-group right-group">
+           <label for="" class="output-lbl">Tip</label>
+           <span id="tip-head">0.00</span>
+
+           <div class="subscript">
+                  <span id="tip-subscript" style="display:none;">Per Person</span>
+           </div>
+
+       </div>
+      <div class="form-group right-group">
+          <label for="" class="output-lbl">Total</label>
+          <span id="bill-head">0.00</span>
+
+
+          <div class="subscript">
+                  <span id="ppl-subscript" style="display:none;">Per Person</span>
+           </div>
+
+
+      </div>
+      
+    </div>
+</form>
+</div>
+
+</body>
+<script src="js/jquery-2.1.3.js"></script>
+
+
+<script>
+
+$(document).ready(function(){
+
+
+   var calc = function (){     
+
+        var tot_bill = parseInt($('#tot-bill').val());
+        var per_tip = parseInt($('#per-tip').val());
+        var no_person = parseInt($('#no-person').val());
+
+        var bill_head = $('#bill-head');
+        var tip_head = $('#tip-head');
+// ==================================================
+ if(no_person==1)
+{
+        tip_head.css({
+            fontSize:'32px',
+            color:'gray',
+            fontWeight:'bold',
+           
+        });
+        
+
+         $("#no-person").click(function(){
+        $("#ppl-subscript").hide();
+        $("#tip-subscript").hide();
+          });
+
+         $("#ppl-plus").click(function(){
+        $("#ppl-subscript").hide();
+        $("#tip-subscript").hide();
+          });
+       
+}
+else
+{
+tip_head.css({
+            fontSize:'42px',
+            fontWeight:'bold'
+        });
+ $("#no-person").click(function(){
+        $("#ppl-subscript").show();
+        $("#tip-subscript").show();
+          });
+  $("#ppl-plus").click(function(){
+        $("#ppl-subscript").show();
+        $("#tip-subscript").show();
+          });
+}
+// ====================================================
+if(no_person==1)
+{
+        bill_head.css({
+           fontSize:'32px',
+            color:'gray',
+            fontWeight:'bold'
+          });
+}
+else
+{
+  bill_head.css({
+           fontSize:'42px',
+           fontWeight:'bold'
+          });
+}
+// =============================================
+
+
+        var tip = ((tot_bill)*(per_tip))/(no_person)/100;
+        var bill_per_head = (tot_bill/no_person) + tip;
+
+       
+        tip_head.text(tip.toFixed(2));
+        bill_head.text(bill_per_head.toFixed(2));
+
+    }
+
+    $('input[type="text"]').blur(calc);
+
+
+   
+
+    function inc_tip(){
+        var per_tip = parseInt($('#per-tip').val());
+        per_tip++;
+        $('#per-tip').val(per_tip);
+    }
+     $('#tip-plus').click(inc_tip);
+     $('#tip-plus').click(calc);
+    
+    
+    
+    function inc_ppl(){
+        var no_person = parseInt($('#no-person').val());
+        no_person++;
+         $('#no-person').val(no_person);
+
+    }
+    $('#ppl-plus').click(inc_ppl);
+    $('#ppl-plus').click(calc);
+
+    function dec_ppl(){
+     var no_person = parseInt($('#no-person').val());
+      if(no_person>1){
+
+        var no_person = parseInt($('#no-person').val());
+        no_person--;
+         $('#no-person').val(no_person);
+            if(no_person>1)
+            {
+
+              no_person
+            }
+      }
+      else{
+        var no_person=1;
+         $('#no-person').val(no_person);
+      }       
+    }
+     $('#ppl-minus').click(dec_ppl);
+     $('#ppl-minus').click(calc);
+
+
+      function dec_tip(){
+      var per_tip = parseInt($('#per-tip').val());
+      if(per_tip>0){
+
+        var per_tip = parseInt($('#per-tip').val());
+        per_tip--;
+        $('#per-tip').val(per_tip);
+
+      }
+      else{
+        var per_tip=0;
+         $('#per-tip').val(per_tip);
+      }
+    }   
+
+     $('#tip-minus').click(dec_tip);
+     $('#tip-minus').click(calc);
+
+});
+</script>
+ 
+</html>
